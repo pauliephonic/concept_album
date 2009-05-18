@@ -27,13 +27,8 @@
 		end
 		
 		def url_from_path(path)
-			puts "---removing #{base_album_path} from #{path}"
 			File.join('/', path.gsub(base_album_path,''))
 		end
-		
-		#def public_url_for_local_path(path)
-		#	File.join('/images/', base_album_path, path)
-		#end
 		
 		def bounds_from_string(string)
 			string.downcase.split('x').map{|s| s.to_i}

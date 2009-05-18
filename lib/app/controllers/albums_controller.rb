@@ -30,10 +30,10 @@ class AlbumsController < ApplicationController
 	  	send_image_if_exists image
 	  elsif /\.xml$/i =~ @path 
 	  	path = @path.gsub(/\.xml$/,'')
-			@album = Album.from_path(path)
+			@album = album_from_cache_or_path(path)
 	  	render :xml => @album
 	  else
-			@album = Album.from_path(@path)
+			@album = album_from_cache_or_path(@path)
     end
   end
 

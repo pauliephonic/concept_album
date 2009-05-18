@@ -3,7 +3,7 @@
 		include ActsLikeAR
 		include ConceptAlbum
 		
-		attr_accessor  :path, :images, :parent, :sub_albums, :thumbnail, :url
+		attr_accessor  :path, :images, :parent, :sub_albums, :thumbnail
 
 		def initialize
 			@images = []
@@ -15,10 +15,7 @@
 		end
 		
 		def self.from_path(local_path)
-			Rails.cache.fetch('album_' + local_path, :expires_in => 5.minutes) do
-				a = Album.create :path => local_path
-				a.scan
-			end
+			Album.create(:path => local_path).scan
 		end
 		
 		def self.from_full_path(full_path)
