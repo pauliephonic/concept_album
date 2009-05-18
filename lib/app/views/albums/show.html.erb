@@ -1,0 +1,101 @@
+<% content_for :script do %>
+	<script type="text/javascript">
+	
+		var started = false;
+		var delay = 5;
+		
+		function startSlideshow(){
+			started = true;
+			$('a#0').click();
+			waitAndClickNext();
+		}
+		
+		function stopSlideshow(){
+			if (started){
+				started = false;
+				$('a#lightbox-secNav-btnClose').click();
+			}
+		}
+
+		function clickNextIfThere(){
+			if (started){
+				if (isLightboxEnd() || isLightboxGone()){
+					stopSlideshow();
+				} else {
+					$('a#lightbox-nav-btnNext').click();
+					waitAndClickNext();
+				}
+			}
+		}
+		
+		function isLightboxEnd(){
+			spans = $('span#lightbox-image-details-currentNumber');
+			if (spans.length > 0){
+				var match = /(\d*) of (\d*)/.exec(spans[0].innerHTML); //look for 'X of Y' in lightbox info
+				if ((match != null) && (match[1] == match[2]))
+					return true;
+			}
+		}
+		
+		function isLightboxGone(){
+			if($('div#jquery-lightbox').length == 0)
+				return true;
+		}
+		
+		function waitAndClickNext(){
+			setTimeout(clickNextIfThere, (delay * 1000));
+		}
+		
+		function setNewSizes(named_size){
+			$('.lightbox_link').each(function(i){
+				this.href = this.href.replace('resize=large','resize=' + named_size);
+			});
+		}
+			
+		$(function() {		
+		  var width = $(window).width();
+		  var height = $(window).height();
+		  $.getJSON("/concept_album/size_for?width=" + width + "&height=" + height,
+		  	function(data){ 
+		   		setNewSizes(data.name);    	
+		    });
+		  $('#image_gallery a').lightBox();
+		  $('#image_gallery a').click(stopSlideshow);
+		  $('a#0').unbind('click',stopSlideshow);
+		});
+		
+	</script>
+<% end %>
+
+	<h1><%= title_link(@album) %> <%= crumb_trail(@path_items) %></h1>
+
+<% if @album.sub_albums.length > 0 %>
+	<div class="grid_holder">
+		<%= render :partial => 'album', :collection => @album.sub_albums %>
+		<p style="clear :both;"></p>
+	</div>
+<% end %>
+
+<% if @album.images.length > 0 %>
+		<div class="grid_holder">
+			<% unless @album.images.empty? %>
+			<div class="image_view">
+				<div class="img-shadow">
+					<div class="image_holder">
+						<%= link_to image_tag('/images/slideshow.png', :alt => 'Play Slideshow'), 
+										              '#', :onclick => "startSlideshow(); return false;" %>
+					</div>
+				</div>
+			</div>
+			<% end %>
+			<div id="image_gallery">
+				<%= render :partial => 'images/image', :collection => @album.images %>
+				<p style="clear :both;"></p>
+			</div>
+		</div>
+<% end %>
+
+<p class="footer_info">
+	<%= contents_description @album %>
+</p>
+

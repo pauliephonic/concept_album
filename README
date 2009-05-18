@@ -1,0 +1,33 @@
+ConceptAlbum
+============
+
+Introduction goes here.
+
+
+Example
+=======
+
+Example goes here.
+
+
+Copyright (c) 2009 Paul McConnon, released under the MIT license
+
+
+
+TODO
+----
+ - Tests
+   - Test loading with normal environment
+     - Check loaded gems
+   - Get 3 images in 2 folders, inc subfolder
+   - tests 
+     - should scan
+     - resize image (check the output size)
+   - metalalbum   
+     - bounds
+     -  nearest_named_size_below(width, height
+     - retrive named size
+     - Config sets and gets
+       - 
+  - Rake test to check gems?
+	

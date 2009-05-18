@@ -1,0 +1,68 @@
+<% content_for :script do %>
+	<script type="text/javascript">
+	
+		var started = false;
+		var delay = 5;
+		
+		function startSlideshow(){
+			//click first image link and set timer
+			started = true;
+			ret = $('a#0').click();
+			waitAndClickNext();
+		}
+		
+		function stopSlideshow(){
+			started = false;
+			$('a#lightbox-secNav-btnClose').click();
+		}
+		
+		function clickNextIfThere(){
+			if (($('a#lightbox-nav-btnNext').length > 0) && ($('a#lightbox-nav-btnNext').is(':visible'))) {
+			    $('a#lightbox-nav-btnNext').click();
+					waitAndClickNext()    
+				} 
+			else
+					stopSlideshow();
+		}
+		
+		function waitAndClickNext(){
+			//click next link and set timeout for 
+			setTimeout(clickNextIfThere, (delay * 1000));
+		}
+		
+		function setNewSizes(named_size){
+			//set proper size for src of images
+			$('.lightbox_link').each(function(i){
+				this.href = this.href.replace('resize=large','resize=' + named_size);
+			});
+		}
+			
+		$(function() {		
+		  var width = $(window).width();
+		  var height = $(window).height();
+		  //get size for images we should be requesting based on screen size
+		  $.getJSON("/concept_album/size_for?width=" + width + "&height=" + height,
+		      function(data){ 
+		      	setNewSizes(data.name);    	
+		      });
+		  $('#image_gallery a').lightBox();  
+		});
+		
+	</script>
+<% end %>
+<% if @images.length > 0 %>
+		<div class="grid_holder">
+			<div class="image_view">
+				<div class="img-shadow">
+					<div class="image_holder">
+						<%= link_to image_tag('/images/slideshow.png', :alt => 'Play Slideshow'), 
+										              '#', :onclick => "startSlideshow(); return false;" %>
+					</div>
+				</div>
+			</div>
+			<div id="image_gallery">
+				<%= render :partial => 'images/image', :collection => @images %>
+				<p style="clear :both;"></p>
+			</div>
+		</div>
+<% end %>

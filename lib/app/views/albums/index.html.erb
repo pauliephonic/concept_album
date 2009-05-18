@@ -1,0 +1,4 @@
+<h1>Metal Album : Base Album</h1>
+<p>Info : Contains <%=@base_album.sub_albums.length %> sub albums, and <%=@base_album.images.length %> images.</p>
+<%= render :partial => 'album', :collection => @base_album.sub_albums %>
+<%= render :partial => 'images/image', :collection => @base_album.images %>

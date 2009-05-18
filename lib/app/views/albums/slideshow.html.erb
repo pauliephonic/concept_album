@@ -1,0 +1,77 @@
+<% content_for :script do %>
+	<script type="text/javascript">
+	
+		var named_size = 'large';
+		//store image urls
+		var sources = <%= @sources%>;
+		var have_returned = false;
+		
+	 	function fixStylesForSize(width, height){
+			$('#vertical').css({'margin-top': ((-height / 2) + 'px')});
+			$('#hoz').css({'width': width + 'px'});
+			$('#hoz').css({'height': height + 'px'});
+			//imagelist
+			$('#image_list').css({"height" : ((height - 50) + 'px'),'width' : ((width - 50) + 'px')});
+		}
+		
+		function setNewSizes(named_size, width, height){
+			fixStylesForSize(width, height);
+			//set proper size for src of slideshow images
+			$.each(sources, function(i, item){
+		  	item.src = item.src.replace('resize=large','resize=' + named_size);
+		  });
+		}
+
+		$(function() {  
+			//need to start requests for images one by one
+		  
+		  //get viewport height and width and pass back to server
+		  width = 1085;
+		  height = 800;
+		  
+		  //get size for images we should be requesting based on screen size
+		  $.getJSON("/concept_album/size_for?width=" + width + "&height=" + height,
+		      function(data){
+		        setNewSizes(data.name, data.width, data.height);
+						$('#image_list').crossSlide({fade: 1}, sources);	
+					});
+		});
+		
+	</script>
+<% end %>
+<style type ="text/css">
+
+	html,body{
+    height:100%;
+    /*margin:0;
+    padding:0;*/
+    background-color: #444;
+	}
+	a {
+		color : white;
+		text-decoration : none;
+		font-size :1.1em;
+	}
+	#vertical{
+		  position:absolute;
+		  top:50%;
+		  margin-top:-240px;  /* half main elements height*/
+		  left:0;
+		  width:100%;
+	}
+	
+	#hoz {
+		  width:640px;
+		  margin-left:auto;
+		  margin-right:auto;
+		  height:480px;
+		  overflow:auto;/* allow content to scroll inside element */
+		  text-align : center;
+	}
+</style>
+<%= link_to('Back', @back_link_url) if @back_link_url -%> 
+<div id="vertical">
+	<div id="hoz">
+			<div id="image_list" style="height: 590px; width:430px;">Loading ...</div>
+	</div>
+</div>
