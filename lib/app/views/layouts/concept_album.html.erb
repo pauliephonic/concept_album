@@ -4,10 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <title>Metal Album: <%= controller.action_name %></title>
-  <%= stylesheet_link_tag 'reset','app','jquery.lightbox-0.5' %>
-  <%= javascript_include_tag 'jquery-1.3.2.js', 'jquery.cycle.all.js', 
-                             'jquery.lightbox-0.5','jquery.cross-slide' %> 
+  <title>Concept Album: <%= controller.action_name %></title>
+  <%= stylesheet_link_tag '/concept_album_asset/reset','/concept_album_asset/app','/concept_album_asset/jquery.lightbox-0.5.css' %>
+  <%= javascript_include_tag '/concept_album_asset/jquery-1.3.2.js', '/concept_album_asset/jquery.lightbox-0.5.js' %> 
   <%= yield :script %>
 </head>
 <body>

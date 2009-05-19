@@ -3,19 +3,30 @@ ConceptAlbum
 
 Introduction goes here.
 
-
+Install Notes
+		mod_xsendfile
+			compile
+			line in apache2.conf
+			site specific passenger example
+	add map.album to top of routes.rb
+	Passenger
+	Apache
+	 XSendFile on
+   XSendFileAllowAbove on
+        
+	Config in environment.rb
+	
 Example
 =======
 
 Example goes here.
-
+- Include details of xml list for albums 
 
 Copyright (c) 2009 Paul McConnon, released under the MIT license
 
 
-
 TODO
-----
+=======
  - Tests
    - Test loading with normal environment
      - Check loaded gems
@@ -31,3 +42,44 @@ TODO
        - 
   - Rake test to check gems?
 	
+	
+	- uinstall 
+		
+		
+		
+		
+			Use mini-magic
+	do random-grid markup from helper
+	ignore hidden images
+	add javascript handler for random.js
+	inludes document.write for style and markup for random table	
+	do slideshow embedded markup
+
+	Pluginize		
+
+	get rid of white boxes that show for unloaded images
+		possibly style a parent div dark
+				
+	add resize all in folder rake task
+		
+		
+		
+		
+		
+		
+	
+		
+	
+		Docs
+			Usage
+			Install Plugin
+			Configure
+				in environment.rb
+				MetalAlbum::Config.site_name = 'Photos' #
+				MetalAlbum::Config.base_album_path = '/home/paul/photos' #absolute path
+				MetalAlbum::Config.cache_path = '/tmp/cache' # relative to rails rootdefaults to '/tmp/album_cache' 
+				
+			Bare album
+			Random markup
+				<%= random_grid_markup(9) %>
+				Lightbox Ready just include the javascript in the header

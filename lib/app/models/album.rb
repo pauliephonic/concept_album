@@ -31,9 +31,9 @@
 			File.join('/concept_album/', self.path)
 		end
 		
-		def slideshow_url
-			File.join('/concept_album/slideshow/' ,self.path)
-		end
+		#def slideshow_url
+		#	File.join('/concept_album/slideshow/' ,self.path)
+		#end
 		
 		def name
 			self.nice_folder_name
@@ -81,7 +81,7 @@
 		
 		def for_xml
 			{:name => self.name,
-			 :url => self.url, 
+			 :url => self.public_url,
 			 :sub_albums => self.sub_albums.map{|a| a.for_xml}, 
 			 :images => self.images.map{|i| i.for_xml}
 			}

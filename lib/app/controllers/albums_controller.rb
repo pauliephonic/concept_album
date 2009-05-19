@@ -1,7 +1,7 @@
 class AlbumsController < ApplicationController
   # GET /concept_album/
   # GET /concept_album/album.xml
-	
+	layout 'concept_album'
   def index
     @base_album = Album.base
     respond_to do |format|
@@ -54,6 +54,27 @@ class AlbumsController < ApplicationController
   	render :json => {:name => required_size, :width => new_width, :height => new_height}.to_json
   end
   
+  
+  def serve_asset
+    path = params[:path]
+    if /\.js$/i =~ path
+    	send_file(asset_path(path), {:disposition => 'inline',
+  						 :x_sendfile => true, :type => 'text/javascript'})
+ 		elsif /\.css$/i =~ path
+ 			send_file(asset_path(path), {:disposition => 'inline',
+  						 :x_sendfile => true, :type => 'text/css'})
+  	elsif /\.png$/i =~ path
+ 			send_file(asset_path(path), {:disposition => 'inline',
+  						 :x_sendfile => true, :type => 'image/png'})
+  	elsif /\.jpg$/i =~ path
+ 			send_file(asset_path(path), {:disposition => 'inline',
+  						 :x_sendfile => true, :type => 'image/jpeg'})
+  	elsif /\.gif$/i =~ path
+ 			send_file(asset_path(path), {:disposition => 'inline',
+  						 :x_sendfile => true, :type => 'image/gif'})
+ 		end
+  end
+  
   #=====================================================================
   
   
@@ -94,6 +115,10 @@ class AlbumsController < ApplicationController
 		  Album.from_path(path)
 		end
 	end
-	 
+	
+	def asset_path(file)
+		@this_file_path ||= File.dirname(__FILE__)
+		File.expand_path(File.join(@this_file_path,'../views/assets',file))
+	end
 end
 
