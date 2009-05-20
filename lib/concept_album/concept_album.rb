@@ -9,11 +9,7 @@
 		def cache_path 
 			ConceptAlbum::Config.cache_path 
 		end
-		
-		#def base_album_path=(path)
-		#	MetalAlbum::Config.base_album_path = path
-		#end
-		
+			
 		def path_from_url(url)
 			File.join(base_album_path, url)
 		end
@@ -63,8 +59,6 @@
 					end
 				}
 			end
-			#new_width, new_height = MetalAlbum::Config.named_size_dimensions[max_name]				
-			#[new_width, new_height]
 			max_name
 		end
 		
@@ -84,7 +78,7 @@
 		end
 		
 		class Config
-			#only size required is thumb
+			#only size required are thumbs
 			@@named_sizes = {:tiny => '60x60' , :thumb_square => '100x100',   :thumb => '120x90', 
 			                 :small => '400x300',  :medium => '640x480', :large => '800x600', 
 			                 :extra_large => '1024x768', :feckin_massive => '1152x864'}

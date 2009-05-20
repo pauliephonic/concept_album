@@ -8,11 +8,11 @@ class AlbumsControllerTest < Test::Unit::TestCase
 		@request = ActionController::TestRequest.new
 		@response = ActionController::TestResponse.new 
 		ActionController::Routing::Routes.draw do |map| 
-			map.resources :albums #TODO proper routes   
+			map.album  #TODO proper routes   
 		end  
 	end  
 	def test_index 
-		get :index  
+		get :index
 		assert_response :success 
 	end 
 end 

@@ -1,3 +1,6 @@
+	
+	#use map.album in your main routes.rb to enable these routes
+	
 module ConceptAlbum #:nodoc:  
 	module Routing #:nodoc:  
 		module MapperExtensions 
