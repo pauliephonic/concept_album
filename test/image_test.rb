@@ -45,14 +45,18 @@ class ImageTest < Test::Unit::TestCase
 		assert_equal 933,i.height 
 		i.set_size :large #'800x600'
 		i.generate_resized_image
-		puts "\n\n\npath #{ConceptAlbum::Config.cache_path}\n\n"
-		puts "\n\n\n#{i.cache_file_name}\n\n"
-		check_cache_for_file("photo1_resized_800x600_fit")
+		
+		assert_equal 'photo1_resized_800x600_fit.jpg', i.resized_image_url
+		assert File.exist?(i.cache_file_name), "Resized file must exist"
+		assert_equal [800,533], get_image_file_size(i.cache_file_name)
 	end
 	
-	def check_cache_for_file(file_name)
-			folder = ConceptAlbum::Config.cache_path
-			File.exist?(File.join(folder, file_name))
+	def get_image_file_size(file_name)
+			image = Magick::ImageList.new(file_name)
+      width = image.columns
+      height = image.rows
+      image = nil
+      [width, height]
 	end
 		
 	def clear_cache_folder

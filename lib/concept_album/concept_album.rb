@@ -15,7 +15,7 @@
 		end
 		
 		def cache_path_from_url(url)
-			File.join(RAILS_ROOT, cache_path, url)
+			File.join(cache_path, url)
 		end
 		
 		def base_album_folder
