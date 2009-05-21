@@ -52,6 +52,10 @@ class ConceptAlbumTest < ActiveSupport::TestCase
 		assert_equal :large, test_class.nearest_named_size_below(801,600), "Should choose correct nearest size"
 	end
 	
-	
-	
+	def test_bounds_from_string
+		test_class = Class.new
+		test_class.extend ConceptAlbum
+		assert_equal [50,50], test_class.bounds_from_string('50x50')
+		assert_equal [1024,768], test_class.bounds_from_string('1024x768')
+	end
 end

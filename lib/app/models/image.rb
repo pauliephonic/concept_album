@@ -142,19 +142,22 @@
     end
     
      def new_size_for_clip(ow, oh)
-      #shortest side should be max_side
+     	# calc size that will fill bounds, overshooting one dside possibly
+			# we can then clip and have scaled to fill size
+
+      # shortest old/new ratio should be max_side
       nw = ow
       nh = oh
-      width_ratio = ow / @bounds_x.to_f
-      height_ratio = oh / @bounds_y.to_f
-      puts "width ratio #{width_ratio}"
-      puts "height ratio #{height_ratio}"
-      if width_ratio > height_ratio
-        nw = nw * (@bounds_y.to_f / oh)
-        nh = @bounds_y
-      else
-        nh = nh * (@bounds_x.to_f / ow)
-        nw = @bounds_x
+      unless ow < @bounds_x || oh < @bounds_y
+      	width_ratio = ow / @bounds_x.to_f
+	      height_ratio = oh / @bounds_y.to_f
+	      if width_ratio > height_ratio
+	        nw = nw * (@bounds_y.to_f / oh)
+	        nh = @bounds_y
+	      else
+	        nh = nh * (@bounds_x.to_f / ow)
+	        nw = @bounds_x
+	      end
       end
       [nw.to_i, nh.to_i]
     end
