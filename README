@@ -27,6 +27,13 @@ Copyright (c) 2009 Paul McConnon, released under the MIT license
 
 TODO
 =======
+	- do random.js
+		- served by server
+		- returns document.write blah
+			- which creates the markup 
+
+	- Rails page-caching?
+
  - Tests
    - Test loading with normal environment
      - Check loaded gems
