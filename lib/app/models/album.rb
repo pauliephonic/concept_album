@@ -61,6 +61,27 @@
 			@sub_albums
 		end
 		
+		def paginated_images(current_page)
+			 if images.length > ConceptAlbum::Config.images_per_page
+			  current_page = total_pages if current_page > total_pages
+			  start = ConceptAlbum::Config.images_per_page * (current_page -1)
+			  images[start, ConceptAlbum::Config.images_per_page]
+			 else
+			 	images
+			 end
+		end
+		
+		def total_pages
+			pages = 1
+			if images.length > ConceptAlbum::Config.images_per_page
+				pages =  (images.length / ConceptAlbum::Config.images_per_page).to_i
+			  pages +=1 if (images.length % ConceptAlbum::Config.images_per_page) > 0		 	
+			 end
+			 pages
+		end
+		
+		
+		
 		def scan
 			@images = []
 			@sub_albums = []

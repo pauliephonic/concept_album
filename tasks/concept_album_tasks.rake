@@ -8,7 +8,9 @@ namespace :concept_album do
 		description << "generated for all"  
 		
 		desc description 
-		task :concept_album => :environment do  
+		task :concept_album do  
+			 size = ENV['size'] || 'thumb'
+			 
 			#do stuff  
 		end  
 	end 

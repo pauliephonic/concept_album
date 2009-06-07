@@ -32,6 +32,31 @@ module AlbumsHelper
 		ret = "&gt; " + ret unless ret == ''
 	end
 	
+	def paging_nav(total_items, current_item, album_url)
+	  ret =""
+		#url = File.join("/concept_album", album_url)
+		(1..@album.total_pages).each do |page|
+			if page ==  @current_page
+				contents =  page.to_s
+			else
+				contents =  page_link page, album_url #"<a href=\"#{url + '?page=' + page.to_s}\">#{page}</a>\n"
+			end
+		  ret << "<span class=\"page_nav\">\n"
+		  ret << contents + "\n"
+		  ret << "</span>\n"
+		end
+		ret
+	end
+	
+	def page_link(page, album_url)
+		"<a href=\"#{page_url(page, album_url)}\">#{page}</a>\n"
+	end
+	
+	def page_url(page, album_url)
+		url = File.join("/concept_album", album_url)
+		url + '?page=' + page.to_s
+	end
+	
 	def nice_name(folder)
 		folder.gsub! '_',' '
 		folder.split.collect{|w| w.capitalize}.join(' ')

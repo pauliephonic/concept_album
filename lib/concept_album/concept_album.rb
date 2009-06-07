@@ -109,6 +109,14 @@
 				@@cache_path = path
 			end
 			
+			def self.images_per_page
+				@@images_per_page ||= 35
+			end
+			
+			def self.images_per_page=(num)
+				@@images_per_page = num
+			end
+			
 			def self.default_thumbnail
 				@@default_thumbnail ||= "100x100"
 			end

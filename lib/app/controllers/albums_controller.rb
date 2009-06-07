@@ -34,6 +34,7 @@ class AlbumsController < ApplicationController
 	  	render :xml => @album
 	  else
 			@album = album_from_cache_or_path(@path)
+			@current_page = (params[:page] || 1).to_i
     end
   end
 
@@ -41,9 +42,15 @@ class AlbumsController < ApplicationController
   def random
 		number = (params[:number] || 9).to_i
 		opts = {}
-		opts[:layout] = (params[:layout] != 'false') 
+		params[:layout] == 'false' ? do_layout = false : do_layout = true
 		@images = Album.base.random_images(number)
-		render 'random_grid', opts
+		render :action => 'random_grid', :layout => do_layout
+  end
+  
+  def random_markup
+		number = (params[:number] || 9).to_i
+		@images = Album.base.random_images(number)
+		render :partial => 'inline_random', :locals => {:images => @images}
   end
   
   def get_slideshow_size_for_viewport
@@ -120,5 +127,6 @@ class AlbumsController < ApplicationController
 		@this_file_path ||= File.dirname(__FILE__)
 		File.expand_path(File.join(@this_file_path,'../views/assets',file))
 	end
+
 end
 

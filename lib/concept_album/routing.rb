@@ -9,6 +9,7 @@ module ConceptAlbum #:nodoc:
 																										 :action => 'serve_asset', 
 																						         :path => /.*.(js|css|jpg|gif|png)/})
 				@set.add_route('concept_album/random', {:controller => 'albums', :action => 'random'})
+				@set.add_route('concept_album/random_markup/:number', {:controller => 'albums', :action => 'random_markup'})
 				@set.add_route('concept_album/size_for', {:controller => 'albums', 
 																									:action => 'get_slideshow_size_for_viewport'})  
 				@set.add_route('concept_album/*path', {:controller => 'albums', :action => 'show'})
@@ -17,4 +18,5 @@ module ConceptAlbum #:nodoc:
 		end  
 	end
 end
+
 ActionController::Routing::RouteSet::Mapper.send :include, ConceptAlbum::Routing::MapperExtensions 

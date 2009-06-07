@@ -68,6 +68,10 @@
 <% end %>
 
 	<h1><%= title_link(@album) %> <%= crumb_trail(@path_items) %></h1>
+	<% if @album.total_pages > 1 %>
+		<p>Page <%= @current_page %> of <%= @album.total_pages %> 
+		<span style="font-size:0.9em;">(<%= paging_nav(@album.total_pages, @current_item, @path) %>)</span>
+	<% end %>
 
 <% if @album.sub_albums.length > 0 %>
 	<div class="grid_holder">
@@ -88,14 +92,21 @@
 				</div>
 			</div>
 			<% end %>
+				
 			<div id="image_gallery">
-				<%= render :partial => 'images/image', :collection => @album.images %>
+				<%= render :partial => 'images/image', :collection => @album. paginated_images(@current_page) %>
 				<p style="clear :both;"></p>
 			</div>
+			
+			<% if @current_page < @album.total_pages %>
+			<div class="image_view">
+				<div class="img-shadow">
+					<div class="image_holder">
+						<%=link_to image_tag('/concept_album_asset/nextpage.png', :alt => 'View more photos in the next album page'),
+										              page_url(@current_page + 1, @path) %>
+					</div>
+				</div>
+			</div>
+			<% end %>
 		</div>
 <% end %>
-
-<p class="footer_info">
-	<%= contents_description @album %>
-</p>
-

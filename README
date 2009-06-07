@@ -13,7 +13,20 @@ Install Notes
 	Apache
 	 XSendFile on
    XSendFileAllowAbove on
-        
+   
+   This gives you /concept_album yay!
+   
+   To include your album images within other pages in your application 
+   		Ensure you have links to 
+        jquery.lightbox-0.5.css, jquery-1.3.2.js, jquery.lightbox-0.5.js
+      there are two methods
+	   		1. Use the helper <%= random_grid_markup(number)%>
+	   			This will add the markup to your rendered page
+	   		2. Use the javascript function
+	   			This renders the images AFTER your page, this can be useful if your page is cached (and you want
+	   			the random images to change) or you do not want to interfere with the application code, other
+	   			than modifying html
+   			
 	Config in environment.rb
 	
 Example
