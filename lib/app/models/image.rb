@@ -54,7 +54,15 @@
     def name
       self.nice_name
     end
-          
+    
+    def parent_album_url
+			File.join('/concept_album/', File.split(self.url).first)
+    end
+    
+    def parent_album_name
+    	File.split(self.parent_album_url)[1]
+    end
+    
     def thumbnail_url
       File.join('/concept_album/', self.url) + "?resize=thumb_square&resize_mode=clip"
     end
@@ -114,9 +122,9 @@
       end
       make_folder_for_file(self.cache_file_name)
       tiny.write self.cache_file_name
-      full_image.destroy!
+      #full_image.destroy!    #not supported by imagemagick < 6.3?
       full_image = nil
-			tiny.destroy!
+			#tiny.destroy!					#not supported by imagemagick < 6.3?
       tiny = nil
       GC.start
     end

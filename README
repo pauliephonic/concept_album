@@ -1,106 +1,146 @@
 ConceptAlbum
 ============
+Concept Album is a Rails photo album plugin. 
 
-Introduction goes here.
+I have a version running on my site [here](http://www.plopcentral.com/concept_album)
 
-Install Notes
-		mod_xsendfile
-			compile
-			line in apache2.conf
-			site specific passenger example
-	add map.album to top of routes.rb
-	Passenger
-	Apache
-	 XSendFile on
-   XSendFileAllowAbove on
-   
-   This gives you /concept_album yay!
-   
-   To include your album images within other pages in your application 
-   		Ensure you have links to 
-        jquery.lightbox-0.5.css, jquery-1.3.2.js, jquery.lightbox-0.5.js
-      there are two methods
-	   		1. Use the helper <%= random_grid_markup(number)%>
-	   			This will add the markup to your rendered page
-	   		2. Use the javascript function
-	   			This renders the images AFTER your page, this can be useful if your page is cached (and you want
-	   			the random images to change) or you do not want to interfere with the application code, other
-	   			than modifying html
-   			
-	Config in environment.rb
-	
-Example
-=======
+The random slideshow control can be viewed on the right of my blog [here](http://www.plopcentral.com/)
 
-Example goes here.
-- Include details of xml list for albums 
+Features
+========
+ - Zero administration, just dump files and folders into the album folder.
+ - Clean minimal album design with little visual distraction and large thumbnails.
+ - Liquid layout; thumbnails flow to fill up the space. Looks particularly good on a widescreen displays.
+ - On the fly resizing and caching
+ - Lightbox built-in.
+ - Smart preview displays images to suit the size of the viewers browser.
+   e.g. small versions of photos are sent to a netbook, full-size to a 24" Display
+ - Unobtrusive slideshow effect by simply 'remote controlling' the Lightbox plugin.
+ - No database required
+ - Requires little configuration
+   - Install Plugin
+   - Point it to photos in environment.rb
+   - Navigate to the url /concept_album and you have a full working photo album!
+   - Routes are handled by the plugin, assets are served by the plugin
+  
+
+Requirements
+============
+
+ - RMagick (and therefore imagemagick)
+ - Apache + mod_xsendfile (NginX + X-Accel-Redirect may work, not tested)
+
+(instructions on installing mod_xsendfile are at bottom of page)
+
+
+Installation
+============
+script/plugin install http://github.com/pauliephonic/concept_album/tree/master
+
+RMagick
+-------
+Rmagick can be fun to get installed, you'll need the imagemagick libraries installed on your box. 
+
+Google is your friend.
+
+Test that Rmagick and the plugin are working
+============================================
+
+navigate to the vendor/plugins/concept_album folder and run rake to test the installation
+
+
+Configuration of the album for your site
+========================================
+
+Add the following:
+
+ - Routes.rb
+    - add 'map.album' to top of routes.rb
+ - environment.rb (add to bottom)
+    - ConceptAlbum::Config.site_name = 'Your Album Name'
+    - ConceptAlbum::Config.base_album_path = '/var/www/test/public/images/photos' #full path to album base
+    - ConceptAlbum::Config.cache_path = '/var/www/test/tmp/album_cache' #full path to cache
+    - require 'RMagick'
+    
+Retart your site
+
+Navigate to /concept_album in your site, you should have a fully working photo album
+
+Including album content in your sites pages
+===========================================
+
+To include your album images within other pages in your application 
+
+There are 3 methods
+
+Use the helper <%= random\_grid\_markup(number)%> in your view
+
+This will add random images to your page, you will need to have included the following in your layout
+
+    jquery.lightbox-0.5.css, jquery-1.3.2.js, jquery.lightbox-0.5.js
+    
+ 2. Use javascript to show random images
+  
+This renders the images AFTER your page, this can be useful if your page is cached (and you want the random images to change) or you do not want to interfere with the application code, other than modifying html
+
+3. Use the slidshow javascript 
+
+  <script src="/concept_album_asset/flash_slideshow.js" type="text/javascript"></script>
+  <div style="width:220px" id="flash_slideshow"></div>
+  <script type="text/javascript">createSlideshowMarkup('flash_slideshow',220,165,20);</script>
+
+
+Tips
+====
+I just synchronise a folder on my computer with a folder on my server using Rsync and the folders photos show up in the album automagically. The site takes care of thumbnailing and resizing itself.
+
+Don't copy 12 Megabyte images into the album folder if you are worried about performance, resizing these will take much CPU. Try suing smaller version of the files. I use 1280x1024 versions of my photos
+
+
+
+Installing mod_xsendfile on Apache2
+===================================
+If mod_xsendfile is already enabled in apache skip this part (see http://tn123.ath.cx/mod_xsendfile/ for details)
+
+I have included mod_xsendfile.c with the plugin code. Navigate to vendor/plugins/concept_album/lib
+
+Compile and install the mod using
+
+    sudo apxs2 -cia mod_xsendfile.c
+
+At the end of the install process you may get the following message
+
+    apxs:Error: Activation failed for custom /etc/apache2/httpd.conf file..
+    apxs:Error: At least one `LoadModule' directive already has to exist..
+  
+This is beacuse your httpd.conf is empty (probably because your setup is using apache.conf) Fix it as follows
+
+Add this line
+
+    LoadModule xsendfile_module /usr/lib/apache2/modules/mod_xsendfile.so
+    
+to the end of your apache2.conf (just underneath the passenger declarations if present)      
+
+In your apaches sites-available\foo file where you store your v-hosts, add
+
+    XSendFile on
+    XSendFileAllowAbove on 
+  
+Only add XSendFileAllowAbove if you are using an album folder outside of the public folder of your Rails app (ie not a subfolder of public)
+
+here is an example of a passenger rails vhost
+
+    <VirtualHost *:80>
+        DocumentRoot "/home/paul/Development/test/public"
+        ServerName test.com
+        XSendFile on
+        XSendFileAllowAbove on
+    </VirtualHost>
+
+Restart apache
+  
 
 Copyright (c) 2009 Paul McConnon, released under the MIT license
 
 
-TODO
-=======
-	- do random.js
-		- served by server
-		- returns document.write blah
-			- which creates the markup 
 
-	- Rails page-caching?
-
- - Tests
-   - Test loading with normal environment
-     - Check loaded gems
-   - Get 3 images in 2 folders, inc subfolder
-   - tests 
-     - should scan
-     - resize image (check the output size)
-   - metalalbum   
-     - bounds
-     -  nearest_named_size_below(width, height
-     - retrive named size
-     - Config sets and gets
-       - 
-  - Rake test to check gems?
-	
-	
-	- uinstall 
-	- add Config.auto = false
-		this will make the system only work if raked
-		
-		
-		
-			Use mini-magic
-	do random-grid markup from helper
-	ignore hidden images
-	add javascript handler for random.js
-	inludes document.write for style and markup for random table	
-	do slideshow embedded markup
-
-	Pluginize		
-
-	get rid of white boxes that show for unloaded images
-		possibly style a parent div dark
-				
-	add resize all in folder rake task
-		
-		
-		
-		
-		
-		
-	
-		
-	
-		Docs
-			Usage
-			Install Plugin
-			Configure
-				in environment.rb
-				MetalAlbum::Config.site_name = 'Photos' #
-				MetalAlbum::Config.base_album_path = '/home/paul/photos' #absolute path
-				MetalAlbum::Config.cache_path = '/tmp/cache' # relative to rails rootdefaults to '/tmp/album_cache' 
-				
-			Bare album
-			Random markup
-				<%= random_grid_markup(9) %>
-				Lightbox Ready just include the javascript in the header

@@ -34,16 +34,13 @@ module AlbumsHelper
 	
 	def paging_nav(total_items, current_item, album_url)
 	  ret =""
-		#url = File.join("/concept_album", album_url)
 		(1..@album.total_pages).each do |page|
-			if page ==  @current_page
-				contents =  page.to_s
+			if page == @current_page
+				contents = page.to_s
 			else
-				contents =  page_link page, album_url #"<a href=\"#{url + '?page=' + page.to_s}\">#{page}</a>\n"
+				contents = page_link(page, album_url)
 			end
-		  ret << "<span class=\"page_nav\">\n"
-		  ret << contents + "\n"
-		  ret << "</span>\n"
+		  ret << "<span class=\"page_nav\">#{contents}</span>\n"
 		end
 		ret
 	end
@@ -67,8 +64,12 @@ module AlbumsHelper
 	end
 	
 	def slideshow_markup(album)
-		#generate a crossfad slideshow
+		#generate a crossfade slideshow
 		#with script etc
+	end
+	
+	def nice_xml_url(url)
+		url.gsub '&', '&amp;'
 	end
 	
 	def random_grid_markup(number)

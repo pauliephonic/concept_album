@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+    <channel>
+        <title><![CDATA[Concept Album Feed]]></title>
+        <description><![CDATA[Slideshow]]></description>
+        <language>en_US</language>
+        <ttl>120</ttl>
+        <% for image in  @images %>
+        <item>
+            <title><![CDATA[]]></title>
+            <mime>image/jpeg</mime>
+            <link><%=image.parent_album_url %></link>
+            <media:content url="<%= nice_xml_url(image.new_size_url(:small))%>">
+               <media:title type="plain"><![CDATA[From Album <%=image.parent_album_name%>]]></media:title>
+               <media:thumbnail url="<%=  nice_xml_url(image.new_size_url(:small))%>"/>
+            </media:content>
+        </item>
+        <% end %>
+    </channel>
+</rss>

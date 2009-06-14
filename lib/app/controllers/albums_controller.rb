@@ -38,13 +38,22 @@ class AlbumsController < ApplicationController
     end
   end
 
-  # GET /concept_album/random?number=9&mode=slideshow&layout=false&size=thumb
+  # GET /concept_album/random?number=9&layout=false
   def random
 		number = (params[:number] || 9).to_i
 		opts = {}
 		params[:layout] == 'false' ? do_layout = false : do_layout = true
 		@images = Album.base.random_images(number)
 		render :action => 'random_grid', :layout => do_layout
+  end
+  
+  # GET /concept_album/slideshow_feed.xml
+  def slideshow_feed
+		number = (params[:number] || 15).to_i
+		@images = Album.base.random_images(number)
+		respond_to do |format|
+			format.xml {render :layout => false}
+		end
   end
   
   def random_markup
@@ -76,6 +85,9 @@ class AlbumsController < ApplicationController
   	elsif /\.jpg$/i =~ path
  			send_file(asset_path(path), {:disposition => 'inline',
   						 :x_sendfile => true, :type => 'image/jpeg'})
+  	elsif /\.swf$/i =~ path
+ 			send_file(asset_path(path), {:disposition => 'inline',
+  						 :x_sendfile => true, :type => 'application/x-shockwave-flash'})
   	elsif /\.gif$/i =~ path
  			send_file(asset_path(path), {:disposition => 'inline',
   						 :x_sendfile => true, :type => 'image/gif'})

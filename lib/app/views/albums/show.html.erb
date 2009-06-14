@@ -95,7 +95,6 @@
 				
 			<div id="image_gallery">
 				<%= render :partial => 'images/image', :collection => @album. paginated_images(@current_page) %>
-				<p style="clear :both;"></p>
 			</div>
 			
 			<% if @current_page < @album.total_pages %>
@@ -108,5 +107,6 @@
 				</div>
 			</div>
 			<% end %>
+			<p style="clear :both;"></p>
 		</div>
 <% end %>
