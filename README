@@ -50,6 +50,7 @@ Test that Rmagick and the plugin are working
 ============================================
 
 navigate to the vendor/plugins/concept_album folder and run rake to test the installation
+(Note my test helper is failing on rails 2.3.2 with a missing Constant I need to fix the helper to work in 2.2 on)
 
 
 Configuration of the album for your site
