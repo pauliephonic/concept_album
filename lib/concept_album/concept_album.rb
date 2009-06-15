@@ -8,7 +8,6 @@
 		
 		def cache_path 
 			# config full path if set or Rails root & 
-			#RAILS_DEFAULT_LOGGER.error "\n\n\n*** is #{ConceptAlbum::Config.cache_path} we gots #{RAILS_ROOT}"
 			ConceptAlbum::Config.cache_path || File.join(RAILS_ROOT, 'public/concept_album')
 		end
 			
