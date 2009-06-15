@@ -4,7 +4,9 @@ TODO
 	
   Fix permalinks
 	- Rake task to fix sizes of images for resizing
-
+  Add small download icon to lightbox to allow download of original image
+	Add Config option for calling img.destroy! for ImageMagick > 6.3?	This has memory implications
+	
  - Tests
  	 - Test album info caching
    - Test loading with normal environment
