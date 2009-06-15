@@ -83,9 +83,6 @@
     def new_size_url(size, mode='fit')
       raise "Not a resize mode option" unless [:fit, :clip].include? mode.to_sym
       raise "Not a valid size" unless ConceptAlbum::Config.named_size_keys.include? size.to_sym
-      
-      #bound_string = ConceptAlbum::Config.get_named_size(size)
-      #bounds_x, bounds_y = bounds_from_string(bound_string)
       resized = self.url.gsub(/(\.(?:jpg|png)$)/i, "_resized_#{size}_#{mode}" + '\\1')
       File.join('/concept_album/',resized)
     end
