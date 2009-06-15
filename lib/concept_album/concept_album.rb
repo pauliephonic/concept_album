@@ -7,7 +7,9 @@
 		end
 		
 		def cache_path 
-			ConceptAlbum::Config.cache_path 
+			# config full path if set or Rails root & 
+			#RAILS_DEFAULT_LOGGER.error "\n\n\n*** is #{ConceptAlbum::Config.cache_path} we gots #{RAILS_ROOT}"
+			ConceptAlbum::Config.cache_path || File.join(RAILS_ROOT, 'public/concept_album')
 		end
 			
 		def path_from_url(url)
@@ -65,7 +67,7 @@
 		def size_of(named_size)
 				ConceptAlbum::Config.named_size_dimensions[named_size]
 		end
-		
+				
 		module ClassMethods; end
 	
 		def self.included(klass)
@@ -85,7 +87,7 @@
 			                 
 			@@max_width = 1200
 			@@max_height = 900
-			
+			@@cache_path = nil
 			def self.max_width
 				@@max_width
 			end
@@ -102,7 +104,7 @@
 			
 			#cache path is relative to rails root
 			def self.cache_path 
-				@@cache_path ||= '/tmp/album_cache'
+				@@cache_path 
 			end
 			
 			def self.cache_path=(path)
@@ -129,15 +131,20 @@
 				result
 			end
 			def self.set_named_size(name,bounds)
-				@@named_sizes[name] = bounds
+				@@named_sizes[name.to_sym] = bounds
 			end
 			def self.get_named_size(name)
-				@@named_sizes[name]
+				@@named_sizes[name.to_sym]
 			end
 			def self.bounds_for_size(size)
 				raise "Unknown Size" unless @@named_sizes.keys.include? size.to_sym
 				@@named_sizes[size.to_sym]
 			end
+			
+			def self.named_size_keys
+  			@@named_sizes.keys
+			end
+			
 			def self.site_name
 				@@site_name ||= 'Metal Album'
 			end

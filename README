@@ -1,3 +1,9 @@
+
+Not Ready at present - do not use - I am making a change to the app to remove the reliance on mod_xsendfile
+===========================================================================================================
+
+
+
 ConceptAlbum
 ============
 Concept Album is a Rails photo album plugin. 
@@ -61,7 +67,9 @@ Add the following:
     - ConceptAlbum::Config.base_album_path = '/var/www/test/public/images/photos' #full path to album base
     - ConceptAlbum::Config.cache_path = '/var/www/test/tmp/album_cache' #full path to cache
     - require 'RMagick'
-    
+ 
+Ensure that cache path e.g. /public/concept_album is writable 
+
 Retart your site
 
 Navigate to /concept_album in your site, you should have a fully working photo album

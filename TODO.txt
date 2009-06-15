@@ -1,6 +1,11 @@
 TODO
 =======
-
+  
+	Change to saving images and assets in public folder
+	Turn on Rails caching of album pages timeout 5 minutes
+	Actually copy files to asset path
+	
+  Fix permalinks
 	- ensure listed by date order Desc
 	- do random.js
 		- served by server

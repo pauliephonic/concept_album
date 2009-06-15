@@ -6,7 +6,7 @@
     attr_accessor :file_name, :description, :keywords, :parent, :url
     attr_reader   :width, :height, :shutter_speed, :aperture, :iso_speed,
                   :camera_model, :focal_length, :flash 
-     
+    
     def initialize
       @description = ''
       @file_name = ''
@@ -19,10 +19,19 @@
     
     
     def self.from_url(url)
-      Image.create(:url => url)
+			match = /^(.*)_resized_(.*)_(clip|fit)(\.jpg)$/i.match(url)
+			if match
+  			i = Image.create(:url => (match[1] + match[4]))
+				i.set_size match[2]
+				i.resize_mode = match[3]
+			else
+				i = Image.create(:url => url)
+			end
+      i
     end
     
     def self.from_file_name(file_name)
+      
       short_path = url_from_path(file_name)
       self.from_url(short_path)
     end
@@ -40,11 +49,11 @@
     end
   
     def file_name
-      path_from_url self.resized_image_url
+      path_from_url self.resized_image_path
     end
     
     def cache_file_name
-      cache_path_from_url self.resized_image_url
+      cache_path_from_url self.resized_image_path
     end
     
     def source_file_name
@@ -64,16 +73,21 @@
     end
     
     def thumbnail_url
-      File.join('/concept_album/', self.url) + "?resize=thumb_square&resize_mode=clip"
+      self.new_size_url('thumb_square', 'clip')
     end
     
     def tiny_url
-      File.join('/concept_album/', self.url) + "?resize=tiny&resize_mode=clip"
+      self.new_size_url('tiny', 'clip')
     end
     
     def new_size_url(size, mode='fit')
       raise "Not a resize mode option" unless [:fit, :clip].include? mode.to_sym
-      File.join('/concept_album/', self.url) + "?resize=#{size}&resize_mode=#{mode}"
+      raise "Not a valid size" unless ConceptAlbum::Config.named_size_keys.include? size.to_sym
+      
+      #bound_string = ConceptAlbum::Config.get_named_size(size)
+      #bounds_x, bounds_y = bounds_from_string(bound_string)
+      resized = self.url.gsub(/(\.(?:jpg|png)$)/i, "_resized_#{size}_#{mode}" + '\\1')
+      File.join('/concept_album/',resized)
     end
     
     def set_size(size_name) #e.g. :large
@@ -96,7 +110,7 @@
       self.for_xml.to_xml
     end
 
-    def resized_image_url #should be path
+    def resized_image_path #should be path
       self.url.gsub(/(\.(?:jpg|png)$)/i, "_resized_#{@bounds_x}x#{@bounds_y}_#{@resize_mode}" + '\\1')
     end
         

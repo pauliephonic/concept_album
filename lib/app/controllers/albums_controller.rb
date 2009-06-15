@@ -18,15 +18,17 @@ class AlbumsController < ApplicationController
     @path = "/" + @path_items.join('/')
     puts "doing show #{@path.inspect}"
     if /(?:jpg|gif|png|jpeg)$/i =~ @path
+    
 	  	image = Image.from_url(@path)
-	  	if params[:resize]
-	  		image.set_size params[:resize]
-			else
-				image.set_size :large
-	  	end
-	  	if params[:resize_mode]
-	  		image.resize_mode = params[:resize_mode]
-	  	end
+	  	
+	  	#if params[:resize]
+	  	#	image.set_size params[:resize]
+			#else
+			#	image.set_size :large
+	  	#end
+	  	#if params[:resize_mode]
+	  	#	image.resize_mode = params[:resize_mode]
+	  	#end
 	  	send_image_if_exists image
 	  elsif /\.xml$/i =~ @path 
 	  	path = @path.gsub(/\.xml$/,'')
@@ -73,24 +75,28 @@ class AlbumsController < ApplicationController
   
   def serve_asset
     path = params[:path]
+    expires_in 10.days
+    
+    #copy the asset to asset path?
+    
     if /\.js$/i =~ path
     	send_file(asset_path(path), {:disposition => 'inline',
-  						 :x_sendfile => true, :type => 'text/javascript'})
+  						  :type => 'text/javascript'})
  		elsif /\.css$/i =~ path
  			send_file(asset_path(path), {:disposition => 'inline',
-  						 :x_sendfile => true, :type => 'text/css'})
+  						  :type => 'text/css'})
   	elsif /\.png$/i =~ path
  			send_file(asset_path(path), {:disposition => 'inline',
-  						 :x_sendfile => true, :type => 'image/png'})
+  						  :type => 'image/png'})
   	elsif /\.jpg$/i =~ path
  			send_file(asset_path(path), {:disposition => 'inline',
-  						 :x_sendfile => true, :type => 'image/jpeg'})
+  						  :type => 'image/jpeg'})
   	elsif /\.swf$/i =~ path
  			send_file(asset_path(path), {:disposition => 'inline',
-  						 :x_sendfile => true, :type => 'application/x-shockwave-flash'})
+  						  :type => 'application/x-shockwave-flash'})
   	elsif /\.gif$/i =~ path
  			send_file(asset_path(path), {:disposition => 'inline',
-  						 :x_sendfile => true, :type => 'image/gif'})
+  						:type => 'image/gif'})
  		end
   end
   
@@ -102,10 +108,10 @@ class AlbumsController < ApplicationController
   
   def send_image(path, options = {})
   	options = {:disposition => 'inline',
-  						 :x_sendfile => true, 
+  						 #:x_sendfile => true, 
   						 :type => 'image/jpeg', 
   						 :stream => false}.merge(options)
-  	expires_in 10.years
+  	expires_in 10.days
 		send_file(path, options)	  
 	end
 	
@@ -114,20 +120,20 @@ class AlbumsController < ApplicationController
 		send_image(image.cache_file_name, options)
 	end
 
-	def random_direction_for_crossslide
-		#eg  from: 'top left', to: 'bottom right'
-		i = rand(4)
-		case i
-		when 0
-			"from: 'top left', to: 'bottom right', "
-		when 1
-			"from: 'top right', to: 'bottom left', "
-		when 2
-			"from: 'bottom left', to: 'top right', "
-		else
-			"from: 'bottom right', to: 'top left', "
-		end
-	end
+	#def random_direction_for_crossslide
+	#	#eg  from: 'top left', to: 'bottom right'
+	#	i = rand(4)
+	#	case i
+	#	when 0
+	#		"from: 'top left', to: 'bottom right', "
+	#	when 1
+	#		"from: 'top right', to: 'bottom left', "
+	#	when 2
+	#		"from: 'bottom left', to: 'top right', "
+	#	else
+	#		"from: 'bottom right', to: 'top left', "
+	#	end
+	#end
 	
 	def album_from_cache_or_path(path)
 		Rails.cache.fetch('album_' + path, :expires_in => 5.minutes) do
@@ -136,6 +142,11 @@ class AlbumsController < ApplicationController
 	end
 	
 	def asset_path(file)
+		@this_file_path ||= File.dirname(__FILE__)
+		File.expand_path(File.join(@this_file_path,'../views/assets',file))
+	end
+	
+	def asset_cache_path(file)
 		@this_file_path ||= File.dirname(__FILE__)
 		File.expand_path(File.join(@this_file_path,'../views/assets',file))
 	end
