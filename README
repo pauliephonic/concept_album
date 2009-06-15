@@ -38,7 +38,7 @@ Requirements
 
 Installation
 ============
-script/plugin install http://github.com/pauliephonic/concept_album/tree/master
+script/plugin install  git://github.com/pauliephonic/concept_album.git
 
 RMagick
 -------
