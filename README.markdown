@@ -82,11 +82,11 @@ in your view. This will add random images to your page, you will need to have in
 
     jquery.lightbox-0.5.css, jquery-1.3.2.js, jquery.lightbox-0.5.js   
 
-* Use the slidshow javascript 
+Use the slideshow javascript 
 
-    <script src="/concept_album_asset/flash_slideshow.js" type="text/javascript"></script>
-    <div style="width:220px" id="flash_slideshow"></div>
-    <script type="text/javascript">createSlideshowMarkup('flash_slideshow',220,165,20);</script>
+     <script src="/concept_album_asset/flash_slideshow.js" type="text/javascript"></script>
+     <div style="width:220px" id="flash_slideshow"></div>
+     <script type="text/javascript">createSlideshowMarkup('flash_slideshow',220,165,20);</script>
 
 This requires no additional files
 
