@@ -18,17 +18,7 @@ class AlbumsController < ApplicationController
     @path = "/" + @path_items.join('/')
     puts "doing show #{@path.inspect}"
     if /(?:jpg|gif|png|jpeg)$/i =~ @path
-    
 	  	image = Image.from_url(@path)
-	  	
-	  	#if params[:resize]
-	  	#	image.set_size params[:resize]
-			#else
-			#	image.set_size :large
-	  	#end
-	  	#if params[:resize_mode]
-	  	#	image.resize_mode = params[:resize_mode]
-	  	#end
 	  	send_image_if_exists image
 	  elsif /\.xml$/i =~ @path 
 	  	path = @path.gsub(/\.xml$/,'')
@@ -119,21 +109,6 @@ class AlbumsController < ApplicationController
 		image.generate_resized_image unless File.exist? image.cache_file_name
 		send_image(image.cache_file_name, options)
 	end
-
-	#def random_direction_for_crossslide
-	#	#eg  from: 'top left', to: 'bottom right'
-	#	i = rand(4)
-	#	case i
-	#	when 0
-	#		"from: 'top left', to: 'bottom right', "
-	#	when 1
-	#		"from: 'top right', to: 'bottom left', "
-	#	when 2
-	#		"from: 'bottom left', to: 'top right', "
-	#	else
-	#		"from: 'bottom right', to: 'top left', "
-	#	end
-	#end
 	
 	def album_from_cache_or_path(path)
 		Rails.cache.fetch('album_' + path, :expires_in => 5.minutes) do

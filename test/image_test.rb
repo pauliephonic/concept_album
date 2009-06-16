@@ -46,7 +46,7 @@ class ImageTest < Test::Unit::TestCase
 		i.set_size :large #'800x600'
 		i.generate_resized_image
 		
-		assert_equal 'photo1_resized_800x600_fit.jpg', i.resized_image_url
+		assert_equal 'photo1_resized_800x600_fit.jpg', i.resized_image_path
 		assert File.exist?(i.cache_file_name), "Resized file must exist"
 		assert_equal [800,533], get_image_file_size(i.cache_file_name)
 	end
