@@ -71,9 +71,9 @@ Including album content in your sites pages
 
 To include your album images within other pages in your application 
 
-There are 2 methods
+There are 2 methods:
 
-* Use the helper 
+Use the helper 
 
     <%= random\_grid\_markup(number)%> 
 
@@ -83,15 +83,16 @@ in your view. This will add random images to your page, you will need to have in
 
 * Use the slidshow javascript 
 
-  <script src="/concept_album_asset/flash_slideshow.js" type="text/javascript"></script>
-  <div style="width:220px" id="flash_slideshow"></div>
-  <script type="text/javascript">createSlideshowMarkup('flash_slideshow',220,165,20);</script>
+    <script src="/concept_album_asset/flash_slideshow.js" type="text/javascript"></script>
+    <div style="width:220px" id="flash_slideshow"></div>
+    <script type="text/javascript">createSlideshowMarkup('flash_slideshow',220,165,20);</script>
 
 This requires no additional files
 
 Tips
 ====
 I just synchronise a folder on my computer with a folder on my server using Rsync and the folders photos show up in the album automagically. The site takes care of thumbnailing and resizing itself.
+
 Don't copy 12 Megabyte images into the album folder if you are worried about performance, resizing these will take much CPU. Try using smaller version of the files. I use 1280x1024 versions of my photos
 
 
