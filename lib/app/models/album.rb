@@ -96,6 +96,7 @@
 					end
 				end
 			}
+			@images = @images.sort!{|a, b| a.file_name <=> b.file_name}
 			@scanned = true
 			self
 		end
